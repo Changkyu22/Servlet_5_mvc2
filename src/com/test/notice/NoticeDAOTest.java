@@ -53,7 +53,7 @@ public class NoticeDAOTest {
 	}
 	
 	public void selectTest()throws Exception {
-		noticeDAO.noticeSelect(con, num);
+//		noticeDAO.noticeSelect(con, num);
 		
 	}
 

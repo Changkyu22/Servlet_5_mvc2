@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nuri.action.ActionForward;
 import com.test.notice.noticeService;
 
 /**
@@ -36,18 +37,21 @@ public class NoticeController extends HttpServlet {
 		
 		String url = request.getServletPath();
 		url = url.substring(8, url.lastIndexOf("."));
+		ActionForward actionForward = null;
 		
 		if(url.equals("noticeList")) {
-			noticeService.selectList();
+			actionForward = noticeService.selectList(request, response);
 		}else if(url.equals("noticeSelect")) {
-			noticeService.selectOne();
+			actionForward = noticeService.selectOne(request, response);
+		}else if(url.equals("noticeWrite")) {
+			actionForward = noticeService.noticeWrite(request, response);
 		}
 		
-		if(flag) {
-			RequestDispatcher view = request.getRequestDispatcher(path);
+		if(actionForward.isFlag()) {
+			RequestDispatcher view = request.getRequestDispatcher(actionForward.getPath());
 			view.forward(request, response);
 		}else {
-			response.sendRedirect(path);
+			response.sendRedirect(actionForward.getPath());
 		}
 		
 	}

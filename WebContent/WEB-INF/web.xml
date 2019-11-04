@@ -5,6 +5,14 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
                       
   <display-name>Servlet_5_mvc2</display-name>
- 
+ 	<servlet>
+ 		<servlet-name>notice</servlet-name>
+ 		<servlet-class>com.nuri.controller.NoticeController</servlet-class>
+ 	</servlet>
+ 	
+ 	<servlet-mapping>
+ 		<servlet-name>notice</servlet-name>
+ 		<url-pattern>*.notice</url-pattern>
+ 	</servlet-mapping>
  
 </web-app>
