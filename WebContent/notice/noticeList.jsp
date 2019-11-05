@@ -1,11 +1,11 @@
 <%@page import="com.nuri.notice.noticeDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	ArrayList<noticeDTO> ar = (ArrayList<noticeDTO>)request.getAttribute("list");
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,33 +21,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
-	 		<div class="container-fluid">
-	    	<div class="navbar-header">
-	      	<a class="navbar-brand" href="#">WebSiteName</a>
-	    </div>
-	    <ul class="nav navbar-nav">
-	    	<li class="active"><a href="/Servlet_3_jsp/index.jsp">Home</a></li>
-	    	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-	        	<ul class="dropdown-menu">
-	        		<li><a href="#">Page 1-1</a></li>
-	        		<li><a href="#">Page 1-2</a></li>
-	        		<li><a href="#">Page 1-3</a></li>
-	        	</ul>
-	      	</li>
-	      	<li><a href="./noticeList.jsp">NOTICE</a></li>
-	    </ul>
-	    <ul class="nav navbar-nav navbar-right">
-<%-- 	    	<% if(memberDTO != null) {%> --%>
-<%-- 	    	<li><a href="<%= request.getContextPath() %>/member/memberMyPage.jsp"><span class="glyphicon glyphicon-user"></span>My Page</a></li> --%>
-<%-- 	      	<li><a href="<%= request.getContextPath() %>/member/memberLogout.jsp"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li> --%>
-<%-- 	      	<%}else{ %> --%>
-<%-- 	      	<li><a href="<%= request.getContextPath() %>/member/memberJoinForm.jsp"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li> --%>
-<%-- 	      	<li><a href="<%= request.getContextPath() %>/member/memberLoginForm.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> --%>
-<%-- 	    <%} %> --%>
-	    </ul>
-	  	</div>
-	</nav>
+<c:import url="../layout/nav.jsp"></c:import>
 
 	<div class="container">
   		<div class="jumbotron">
@@ -62,21 +36,31 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	    	<%
- 	    		for(int i=0; i<ar.size(); i++){ 
- 	    			noticeDTO noticeDTO = ar.get(i); 
-	    	%>
-	      <tr>
-	        <td><%= noticeDTO.getNum() %></td>
-	        <td><a href="./noticeSelect.notice?num=<%= noticeDTO.getNum() %>"><%= noticeDTO.getTitle() %></a></td>
-	        <td><%= noticeDTO.getWriter() %></td>
-	        <td><%= noticeDTO.getReg_date() %></td>
-	        <td><%= noticeDTO.getHit() %></td>
-	      </tr>
-	    	<% } %>
+	    	<c:forEach items="${requestScope.list}" var="dto" varStatus="st">
+		      <tr>
+		        <td>${pageScope.dto.num}</td>
+		        <td><a href="./noticeSelect.notice?num=${pageScope.dto.num}">${pageScope.dto.title}</a></td>
+		        <td>${pageScope.dto.writer}</td>
+		        <td>${pageScope.dto.reg_date}</td>
+		        <td>${pageScope.dto.hit} : st ${st.last}</td>
+		      </tr>
+	    	</c:forEach>
 	    </tbody>
 	  </table>
-	  <a href="./noticeWrite.notice">Write</a>
+	  <div>
+	  	<c:forEach begin="1" end="10" step="1" var="i" varStatus="st">
+	  		${pageScope.i}
+	  	</c:forEach>
+	  </div>
+	  <!--  session에 member, memberDTO 포함되어 있다는 것 -->
+	  <c:if test="${not empty sessionScope.member}">
+		  <a href="./noticeWrite.notice">Write</a>
+	  </c:if>
+	  
+	  <c:choose>
+	  	<c:when test=""></c:when>
+	  	<c:otherwise></c:otherwise>
+	  </c:choose>
 <%-- 	  <%if(memberDTO != null && memberDTO.getGrade() == 3){ %> --%>
 <!-- 	  	<a href="./noticeWrite.jsp" class= "btn btn-default">Write</a> -->
 <%-- 	  <%} %> --%>

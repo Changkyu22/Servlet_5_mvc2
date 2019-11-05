@@ -1,6 +1,7 @@
 package com.test.notice;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -64,7 +65,6 @@ public class noticeService {
 	public ActionForward noticeWrite(HttpServletRequest request, HttpServletResponse response) {
 		ActionForward actionForward = new ActionForward();
 		
-		
 			noticeDTO noticeDTO = new noticeDTO();
 			String method = request.getMethod();
 			
@@ -88,16 +88,55 @@ public class noticeService {
 						request.setAttribute("path", "./noticeList.notice");
 						RequestDispatcher view2 = request.getRequestDispatcher("../common/common_result.jsp");
 						view2.forward(request, response);
-						
 					}
 					
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
 			}else {
+				
 				actionForward.setFlag(true);
 				actionForward.setPath("./noticeWrite.jsp");
 			}
+		return actionForward;
+	}
+	
+	public ActionForward noticeUpdate(HttpServletRequest request, HttpServletResponse response) {
+		ActionForward actionForward = new ActionForward();
+		
+		try {
+			
+			String method = request.getMethod();
+			if(method.equals("POST")) {
+				Connection con = DBConnector.getConnection();
+				noticeDTO noticeDTO = new noticeDTO();
+				noticeDTO.setNum(Integer.parseInt(request.getParameter("num")));
+				noticeDTO.setTitle(request.getParameter("title"));
+				noticeDTO.setContents(request.getParameter("contents"));
+				int result = noticeDAO.update(con, noticeDTO);
+				actionForward.setFlag(true);
+				actionForward.setPath("../common/common_result.jsp");
+				request.setAttribute("path", "./noticeList.notice");
+				con.close();
+				
+				String msg = "Update Fail";
+				if(result>0) {
+					msg = "Update Success";
+				}
+				request.setAttribute("msg", msg);
+				
+			}else {
+				Connection con = DBConnector.getConnection();
+				noticeDTO noticeDTO = noticeDAO.noticeSelect(con, Integer.parseInt(request.getParameter("num")));
+				request.setAttribute("dto", noticeDTO);
+				actionForward.setFlag(true);
+				actionForward.setPath("./noticeUpdate.jsp");
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return actionForward;
 	}
 }

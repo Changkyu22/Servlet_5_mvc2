@@ -45,6 +45,8 @@ public class NoticeController extends HttpServlet {
 			actionForward = noticeService.selectOne(request, response);
 		}else if(url.equals("noticeWrite")) {
 			actionForward = noticeService.noticeWrite(request, response);
+		}else if(url.equals("noticeUpdate")) {
+			actionForward = noticeService.noticeUpdate(request, response);
 		}
 		
 		if(actionForward.isFlag()) {
@@ -62,6 +64,15 @@ public class NoticeController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
+		String url = request.getServletPath();
+		url = url.substring(8, url.lastIndexOf("."));
+		ActionForward actionForward = null;
+		if(url.equals("noticeUpdate")) {
+			actionForward = noticeService.noticeUpdate(request, response);
+		}
 	}
 
 }

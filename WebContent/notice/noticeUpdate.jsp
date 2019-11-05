@@ -5,18 +5,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%
-	request.setCharacterEncoding("UTF-8");
-	response.setCharacterEncoding("UTF-8");
-	
-	noticeDAO noticeDAO = new noticeDAO();
-	
-	Connection con = DBConnector.getConnection();
-	int num = Integer.parseInt(request.getParameter("num"));
-	noticeDTO noticeDTO = noticeDAO.noticeSelect(con, num);
-	
-	con.close();
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,22 +22,22 @@
 <body>
 	<div class="container">
 	  <h2>Notice Update Page</h2>
-	  <form action="./noticeUpdateResult.jsp?num=<%= noticeDTO.getNum() %>" method="post" id="frm" onsubmit=true>
-	  	<input type="hidden" name="num" value="<%= noticeDTO.getNum()%>">
+	  <form action="./noticeUpdate.notice?num=${requestScope.dto.num}" method="post" id="frm" onsubmit=true>
+	  	<input type="hidden" name="num" value="${requestScope.dto.num}">
 	  	
 	    <div class="form-group">
 	      <label for="name">TITLE</label>
-	      <input type="text" class="form-control" id="title" value="<%= noticeDTO.getTitle() %>" name="title">
+	      <input type="text" class="form-control" id="title" value="${requestScope.dto.title}" name="title">
 	    </div>
 	    
 	    <div class="form-group">
 	      <label for="name">WRITER</label>
-	      <input type="text" class="form-control" id="writer" value="<%= noticeDTO.getWriter() %>" name="writer" readonly="readonly">
+	      <input type="text" class="form-control" id="writer" value="${requestScope.dto.writer}" name="writer" readonly="readonly">
 	    </div>
 	    
 	    <div class="form-group">
       		<label for="comment">Contents:</label>
-      		<textarea class="form-control" rows="5" id="contents" name="contents"><%= noticeDTO.getContents() %></textarea>
+      		<textarea class="form-control" rows="5" id="contents" name="contents">${requestScope.dto.contents}</textarea>
    		</div>
    		
    		<button type="submit" class="btn btn-default" id="submit">UPDATE</button>

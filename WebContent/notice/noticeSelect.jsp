@@ -5,10 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%
-	noticeDTO noticeDTO = (noticeDTO)request.getAttribute("dto");
 
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,11 +29,11 @@
 			</thead>
 			<tbody>
 				<tr class="active">
-					<td><%= noticeDTO.getNum() %></td>
-					<td><%= noticeDTO.getTitle() %></td>
-					<td><%= noticeDTO.getWriter() %></td>
-					<td><%= noticeDTO.getReg_date() %></td>
-					<td><%= noticeDTO.getHit() %></td>
+					<td>${requestScope.dto.num}</td>
+					<td>${requestScope.dto.title}</td>
+					<td>${requestScope.dto.writer}</td>
+					<td>${requestScope.dto.reg_date}</td>
+					<td>${requestScope.dto.hit}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -44,10 +41,12 @@
  			<form>
     		<div class="form-group">
       			<label for="comment">Contents:</label>
-      			<textarea class="form-control" rows="5" id="comment" ><%= noticeDTO.getContents() %></textarea>
+      			<textarea class="form-control" rows="5" id="comment" >${requestScope.dto.contents}</textarea>
     		</div>
   			</form>
-		</div>
+  			
+  			<a href="./noticeUpdate.notice?num=${requestScope.dto.num}">Update</a>
+  		</div>
 	</div>
 	
 	<ul class="pager">
